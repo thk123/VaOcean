@@ -34,7 +34,7 @@ AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializePrope
 	// We need a scene component to attach Icon sprite
 	TSubobjectPtr<USceneComponent> SceneComponent = PCIP.CreateDefaultSubobject<USceneComponent>(this, TEXT("SceneComp"));
 	RootComponent = SceneComponent;
-	RootComponent->Mobility = EComponentMobility::Static;
+	RootComponent->Mobility = EComponentMobility::Movable;
 
 #if WITH_EDITORONLY_DATA
 	SpriteComponent = PCIP.CreateEditorOnlyDefaultSubobject<UBillboardComponent>(this, TEXT("Sprite"));
@@ -51,7 +51,7 @@ AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializePrope
 	OceanSimulator = NULL;
 
 	// Enable to see debug spheres
-	//PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bCanEverTick = true;
 }
 
 void AVaOceanStateActor::PreInitializeComponents()
@@ -124,13 +124,13 @@ void AVaOceanStateActor::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	// draw debug speheres
-	/*for (int i = -5; i < 5; ++i)
+	for (int i = -5; i < 5; ++i)
 	{
 		for (int j = -5; j < 5; ++j)
 		{
-			FVector SpherePoint = FVector(250.0f * i, 250.0f * j, 0.0f);
+			FVector SpherePoint = GetActorLocation() + FVector(250.0f * i, 250.0f * j, 0.0f);
 			float OceanHeight = GetOceanLevelAtLocation(SpherePoint);
 			DrawDebugSphere(GetWorld(), SpherePoint + (FVector::UpVector * OceanHeight), 10.0f, 4, FColor::White, false, -1.0f, 0);
 		}
-	}*/
+	}
 }
