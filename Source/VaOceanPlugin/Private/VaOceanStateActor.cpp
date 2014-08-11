@@ -1,6 +1,7 @@
 // Copyright 2014 Vladimir Alyamkin. All Rights Reserved.
 
 #include "VaOceanPluginPrivatePCH.h"
+#include "VaOceanStateActor.h"
 
 AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializeProperties& PCIP)
 	: Super(PCIP)

@@ -1,14 +1,15 @@
 // Copyright 2014 Vladimir Alyamkin. All Rights Reserved.
 
 #pragma once
-
+#include "GameFramework/Actor.h"
+#include "VaOceanTypes.h"
 #include "VaOceanStateActor.generated.h"
 
 /**
  * Calculates wave height based on SK_Ocean shader approach
  */
 UCLASS(ClassGroup = VaOcean, Blueprintable, BlueprintType)
-class AVaOceanStateActor : public AActor
+class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 {
 	GENERATED_UCLASS_BODY()
 
@@ -22,7 +23,7 @@ class AVaOceanStateActor : public AActor
 #endif // WITH_EDITORONLY_DATA
 
 	/** Ocean simulation component (should be set in blueprint!) */
-	UVaOceanSimulatorComponent* OceanSimulator;
+	class UVaOceanSimulatorComponent* OceanSimulator;
 
 
 	//////////////////////////////////////////////////////////////////////////
