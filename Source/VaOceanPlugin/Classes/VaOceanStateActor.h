@@ -58,8 +58,8 @@ class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 	virtual int32 GetOceanWavesNum() const;
 
 	// Begin AActor interface
-	virtual void PreInitializeComponents() OVERRIDE;
-	virtual void PostInitializeComponents() OVERRIDE;
+	virtual void PreInitializeComponents() override;
+	virtual void PostInitializeComponents() override;
 
 	virtual void Tick(float DeltaSeconds) OVERRIDE;
 	// End AActor interface
