@@ -44,7 +44,6 @@ AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializePrope
 		SpriteComponent->SpriteInfo.Category = ConstructorStatics.ID_Notes;			// Assign sprite category name
 		SpriteComponent->SpriteInfo.DisplayName = ConstructorStatics.NAME_Notes;	// Assign sprite display name
 		SpriteComponent->AttachParent = RootComponent;								// Attach sprite to scene component
-		SpriteComponent->Mobility = EComponentMobility::Static;
 	}
 #endif // WITH_EDITORONLY_DATA
 
