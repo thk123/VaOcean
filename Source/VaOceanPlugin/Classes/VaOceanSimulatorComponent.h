@@ -31,6 +31,9 @@ class UVaOceanSimulatorComponent : public UActorComponent
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = OceanSpectrum)
 	class UTextureRenderTarget2D* GradientTarget;
 
+	UPROPERTY(EditAnywhere, Category = Debug)
+	bool bIsUpdatingDisplacementMap;
+
 	//////////////////////////////////////////////////////////////////////////
 	// Buffered data access API
 

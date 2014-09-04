@@ -72,6 +72,8 @@ UVaOceanSimulatorComponent::UVaOceanSimulatorComponent(const class FPostConstruc
 
 	// Be sure that there'is no garbede in it
 	StateActor = nullptr;
+
+	bIsUpdatingDisplacementMap = true;
 }
 
 void UVaOceanSimulatorComponent::BeginDestroy()
@@ -228,8 +230,10 @@ void UVaOceanSimulatorComponent::PostEditChangeProperty(FPropertyChangedEvent& P
 void UVaOceanSimulatorComponent::TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	UpdateContent();
+	if (bIsUpdatingDisplacementMap)
+	{
+		UpdateContent();
+	}
 }
 
 void UVaOceanSimulatorComponent::UpdateContent()
