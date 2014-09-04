@@ -61,7 +61,7 @@ class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 	virtual void PreInitializeComponents() override;
 	virtual void PostInitializeComponents() override;
 
-	virtual void Tick(float DeltaSeconds) OVERRIDE;
+	virtual void Tick(float DeltaSeconds) override;
 	// End AActor interface
 
 protected:
