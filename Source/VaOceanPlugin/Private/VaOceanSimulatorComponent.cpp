@@ -74,6 +74,8 @@ UVaOceanSimulatorComponent::UVaOceanSimulatorComponent(const class FPostConstruc
 	StateActor = nullptr;
 
 	bIsUpdatingDisplacementMap = true;
+
+	PatchSize = 2000.0f;
 }
 
 void UVaOceanSimulatorComponent::BeginDestroy()
@@ -403,8 +405,8 @@ FLinearColor UVaOceanSimulatorComponent::GetGradientColor(int32 X, int32 Y) cons
 float UVaOceanSimulatorComponent::GetOceanLevelAtLocation(FVector& Location) const
 {
 	// TODO: expose these variables
-	float WorldUVx = Location.X / 2048.0f;
-	float WorldUVy = Location.Y / 2048.0f;
+	float WorldUVx = Location.X / PatchSize;
+	float WorldUVy = Location.Y / PatchSize;
 
 	FFloat16Color PixelColour = GetHeightMapPixelColor(WorldUVx, WorldUVy);
 

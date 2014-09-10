@@ -34,6 +34,8 @@ class UVaOceanSimulatorComponent : public UActorComponent
 	UPROPERTY(EditAnywhere, Category = Debug)
 	bool bIsUpdatingDisplacementMap;
 
+	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
+	float PatchSize;
 	//////////////////////////////////////////////////////////////////////////
 	// Buffered data access API
 
@@ -110,6 +112,5 @@ protected:
 
 	// Data for querying the ocean
 	TArray<FFloat16Color> ColorBuffer;
-
 	virtual FFloat16Color GetHeightMapPixelColor(float U, float V) const;
 };
