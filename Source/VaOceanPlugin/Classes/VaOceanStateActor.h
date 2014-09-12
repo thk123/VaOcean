@@ -46,7 +46,7 @@ class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 	float GetGlobalOceanLevel() const;
 
 	/** Get ocean level at desired position */
-	virtual float GetOceanLevelAtLocation(FVector& Location) const;
+	virtual float GetOceanLevelAtLocation(const FVector& Location) const;
 
 	/** Get ocean surface normal at desired location */
 	virtual FLinearColor GetOceanSurfaceNormal(FVector& Location) const;

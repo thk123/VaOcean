@@ -74,7 +74,7 @@ const FSpectrumData& AVaOceanStateActor::GetSpectrumConfig() const
 	return SpectrumConfig;
 }
 
-float AVaOceanStateActor::GetOceanLevelAtLocation(FVector& Location) const
+float AVaOceanStateActor::GetOceanLevelAtLocation(const FVector& Location) const
 {
 	// @TODO Get altitute from ocean simulation component
 

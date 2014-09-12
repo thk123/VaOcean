@@ -63,7 +63,7 @@ public:
 	void UpdateDisplacementMap(float WorldTime);
 	void UpdateDisplacementArray();
 
-	float GetOceanLevelAtLocation(FVector& Location) const;
+	float GetOceanLevelAtLocation(const FVector& Location) const;
 protected:
 
 	//////////////////////////////////////////////////////////////////////////

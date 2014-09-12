@@ -13,7 +13,7 @@ class AVaOceanStateActorSimple : public AVaOceanStateActor
 	GENERATED_UCLASS_BODY()
 
 	// Begin AVaOceanStateActor interface
-	virtual float GetOceanLevelAtLocation(FVector& Location) const override;
+	virtual float GetOceanLevelAtLocation(const FVector& Location) const override;
 	virtual FLinearColor GetOceanSurfaceNormal(FVector& Location) const override;
 	virtual FVector GetOceanWaveVelocity(FVector& Location) const override;
 	int32 GetOceanWavesNum() const override;

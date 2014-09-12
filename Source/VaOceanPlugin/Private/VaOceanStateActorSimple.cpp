@@ -44,7 +44,7 @@ void AVaOceanStateActorSimple::PostInitializeComponents()
 //////////////////////////////////////////////////////////////////////////
 // Ocean state API
 
-float AVaOceanStateActorSimple::GetOceanLevelAtLocation(FVector& Location) const
+float AVaOceanStateActorSimple::GetOceanLevelAtLocation(const FVector& Location) const
 {
 	// Check that we've set a texture
 	if (!OceanHeightMap)
