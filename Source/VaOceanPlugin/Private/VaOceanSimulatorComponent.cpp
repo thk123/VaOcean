@@ -404,7 +404,6 @@ FLinearColor UVaOceanSimulatorComponent::GetGradientColor(int32 X, int32 Y) cons
 
 float UVaOceanSimulatorComponent::GetOceanLevelAtLocation(const FVector& Location) const
 {
-	// TODO: expose these variables
 	float WorldUVx = Location.X / PatchSize;
 	float WorldUVy = Location.Y / PatchSize;
 
