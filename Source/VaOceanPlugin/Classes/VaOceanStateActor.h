@@ -45,6 +45,8 @@ class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 	UFUNCTION(BlueprintCallable, Category = "World|VaOcean")
 	float GetGlobalOceanLevel() const;
 
+	float GetOceanPatchSize();
+
 	/** Get ocean level at desired position */
 	virtual float GetOceanLevelAtLocation(const FVector& Location) const;
 

@@ -137,3 +137,15 @@ void AVaOceanStateActor::Tick(float DeltaSeconds)
 		}
 	}
 }
+
+float AVaOceanStateActor::GetOceanPatchSize()
+{
+	if (OceanSimulator)
+	{
+		return OceanSimulator->PatchSize;
+	}
+	else
+	{
+		return 0.0f;
+	}
+}
