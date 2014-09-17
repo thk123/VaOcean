@@ -74,6 +74,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = OceanSetup)
 	float GlobalOceanLevel;
 
+	UPROPERTY(EditAnywhere, Category = Debug)
+	bool bIsDrawingDebugSpheres;
+
 	//UPROPERTY(EditAnywhere, Category = OceanSetup)
 	//float WorldPositionDivider;
 
