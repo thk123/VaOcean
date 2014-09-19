@@ -64,6 +64,7 @@ public:
 	void UpdateDisplacementArray();
 
 	float GetOceanLevelAtLocation(const FVector& Location) const;
+	FVector GetCurrentAtLocation(const FVector& Location) const;
 protected:
 
 	//////////////////////////////////////////////////////////////////////////

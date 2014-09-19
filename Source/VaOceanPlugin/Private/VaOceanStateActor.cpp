@@ -49,6 +49,11 @@ AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializePrope
 
 	OceanSimulator = NULL;
 
+	bIsDrawingDebugSpheres = false;
+	bIsDrawingDebugCurrentLines = false;
+	HalfNumberOfDebugSpheres = 25;
+
+
 	// Enable to see debug spheres
 	PrimaryActorTick.bCanEverTick = true;
 }
@@ -84,6 +89,16 @@ float AVaOceanStateActor::GetOceanLevelAtLocation(const FVector& Location) const
 	}
 
 	return GetGlobalOceanLevel();
+}
+
+FVector AVaOceanStateActor::GetCurrentAtLocation(const FVector& Location) const
+{
+	if (OceanSimulator)
+	{
+		return OceanSimulator->GetCurrentAtLocation(Location);
+	}
+
+	return FVector::ZeroVector;
 }
 
 FLinearColor AVaOceanStateActor::GetOceanSurfaceNormal(FVector& Location) const
@@ -123,16 +138,29 @@ void AVaOceanStateActor::Tick(float DeltaSeconds)
 	Super::Tick(DeltaSeconds);
 
 	// draw debug speheres
-	if (bIsDrawingDebugSpheres)
+	if (bIsDrawingDebugSpheres || bIsDrawingDebugCurrentLines)
 	{
-
-		for (int i = -5; i < 5; ++i)
+		const float GapBetweenSpheres = 2000.0f / HalfNumberOfDebugSpheres;
+		for (int i = -HalfNumberOfDebugSpheres; i < HalfNumberOfDebugSpheres; ++i)
 		{
-			for (int j = -5; j < 5; ++j)
+			for (int j = -HalfNumberOfDebugSpheres; j < HalfNumberOfDebugSpheres; ++j)
 			{
-				FVector SpherePoint = GetActorLocation() + FVector(250.0f * i, 250.0f * j, 0.0f);
+				FVector SpherePoint = GetActorLocation() + FVector(GapBetweenSpheres * i, GapBetweenSpheres * j, 0.0f);
 				float OceanHeight = GetOceanLevelAtLocation(SpherePoint);
-				DrawDebugSphere(GetWorld(), SpherePoint + (FVector::UpVector * OceanHeight), 10.0f, 4, FColor::White, false, -1.0f, 0);
+
+				if (bIsDrawingDebugSpheres)
+				{
+					DrawDebugSphere(GetWorld(), SpherePoint + (FVector::UpVector * OceanHeight), 10.0f, 4, FColor::White, false, -1.0f, 0);
+				}
+
+				if (bIsDrawingDebugCurrentLines)
+				{
+					FVector OceanCurrent = GetCurrentAtLocation(SpherePoint);
+					if (OceanCurrent.SizeSquared2D() > 0.0f)
+					{
+						DrawDebugLine(GetWorld(), SpherePoint + (FVector::UpVector * OceanHeight), SpherePoint + (100.0f * OceanCurrent) + (FVector::UpVector * OceanHeight), FColor::White, false, 0.0f, 0, 10.0f);
+					}
+				}
 			}
 		}
 	}

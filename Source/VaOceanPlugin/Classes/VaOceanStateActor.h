@@ -50,6 +50,8 @@ class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 	/** Get ocean level at desired position */
 	virtual float GetOceanLevelAtLocation(const FVector& Location) const;
 
+	virtual FVector GetCurrentAtLocation(const FVector& Location) const;
+
 	/** Get ocean surface normal at desired location */
 	virtual FLinearColor GetOceanSurfaceNormal(FVector& Location) const;
 
@@ -78,6 +80,12 @@ protected:
 
 	UPROPERTY(EditAnywhere, Category = Debug)
 	bool bIsDrawingDebugSpheres;
+
+	UPROPERTY(EditAnywhere, Category = Debug)
+	bool bIsDrawingDebugCurrentLines;
+
+	UPROPERTY(EditAnywhere, Category = Debug)
+	int32 HalfNumberOfDebugSpheres;
 
 	//UPROPERTY(EditAnywhere, Category = OceanSetup)
 	//float WorldPositionDivider;

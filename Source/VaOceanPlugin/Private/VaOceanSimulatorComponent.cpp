@@ -408,10 +408,25 @@ float UVaOceanSimulatorComponent::GetOceanLevelAtLocation(const FVector& Locatio
 	float WorldUVy = Location.Y / PatchSize;
 
 	FFloat16Color PixelColour = GetHeightMapPixelColor(WorldUVx, WorldUVy);
-
+	
 	return PixelColour.B;
 }
+FVector UVaOceanSimulatorComponent::GetCurrentAtLocation(const FVector& Location) const
+{
+	float WorldUVx = Location.X / PatchSize;
+	float WorldUVy = Location.Y / PatchSize;
+	
+	FFloat16Color PixelColor = GetHeightMapPixelColor(WorldUVx, WorldUVy);
 
+	float R = PixelColor.R;
+	float G = PixelColor.G;
+
+	// Colours in the range [0, 1] (we hope!) want them in range [-1, 1]
+	float NormalizedR = 2.0f * (R - 0.5f);
+	float NormalizedG = 2.0f * (G - 0.5f);
+
+	return FVector(NormalizedR, NormalizedG, 0.0f);	
+}
 void UVaOceanSimulatorComponent::UpdateDisplacementArray()
 {
 	ColorBuffer.Reset();
@@ -419,6 +434,7 @@ void UVaOceanSimulatorComponent::UpdateDisplacementArray()
 	if (DisplacementTarget)
 	{
 		FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)ResultantTexture->Resource;
+
 		if (textureResource->ReadFloat16Pixels(ColorBuffer))
 		{
 
@@ -439,7 +455,7 @@ FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float 
 	if (ColorBuffer.Num() == 0)
 	{
 		//UE_LOG(LogVaOcean, Warning, TEXT("Ocean heightmap raw data is not loaded! Pixel is empty."));
-		return FFloat16Color(FColor::Black);
+		return FFloat16Color(FLinearColor(0.5f, 0.5f, 0.0f));
 	}
 
 #if WITH_EDITORONLY_DATA
@@ -457,10 +473,12 @@ FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float 
 
 	const int PixelX = NormalizedU * (Width - 1) + 1;
 	const int PixelY = NormalizedV * (Height - 1) + 1;
-
 	// Get color from
 	return ColorBuffer[(PixelY - 1) * Width + PixelX - 1];
+
 #else
-	return FFloat16Color(FColor::Black);
+	return FFloat16Color(FLinearColor(0.5f, 0.5f, 0.0f));
 #endif
 }
+
+
