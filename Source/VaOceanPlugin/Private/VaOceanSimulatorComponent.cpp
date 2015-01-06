@@ -458,7 +458,6 @@ FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float 
 		return FFloat16Color(FLinearColor(0.5f, 0.5f, 0.0f));
 	}
 
-#if WITH_EDITORONLY_DATA
 	// We are using the source art so grab the original width/height
 	FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)ResultantTexture->Resource;
 	const int32 Width = textureResource->GetSizeXY().X;
@@ -475,10 +474,6 @@ FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float 
 	const int PixelY = NormalizedV * (Height - 1) + 1;
 	// Get color from
 	return ColorBuffer[(PixelY - 1) * Width + PixelX - 1];
-
-#else
-	return FFloat16Color(FLinearColor(0.5f, 0.5f, 0.0f));
-#endif
 }
 
 

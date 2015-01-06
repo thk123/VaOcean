@@ -52,9 +52,6 @@ float AVaOceanStateActorSimple::GetOceanLevelAtLocation(const FVector& Location)
 		return GetGlobalOceanLevel() + WaterHeight;
 	}
 
-#if WITH_EDITORONLY_DATA
-	check(OceanHeightMap->Source.IsValid());
-
 	// Check we have a raw data loaded
 	if (!bRawDataReady)
 	{
@@ -81,9 +78,6 @@ float AVaOceanStateActorSimple::GetOceanLevelAtLocation(const FVector& Location)
 	float OceanLevel = PixelColor.A * WaveHeight - WaterHeight;
 
 	return OceanLevel + GlobalOceanLevel;
-#else
-	return GetGlobalOceanLevel() + WaterHeight;
-#endif
 }
 
 FLinearColor AVaOceanStateActorSimple::GetOceanSurfaceNormal(FVector& Location) const
@@ -93,9 +87,6 @@ FLinearColor AVaOceanStateActorSimple::GetOceanSurfaceNormal(FVector& Location) 
 	{
 		return FLinearColor::Blue;
 	}
-
-#if WITH_EDITORONLY_DATA
-	check(OceanHeightMap->Source.IsValid());
 
 	// Check we have a raw data loaded
 	if (!bRawDataReady)
@@ -118,9 +109,6 @@ FLinearColor AVaOceanStateActorSimple::GetOceanSurfaceNormal(FVector& Location) 
 
 	// Get heightmap color
 	return FLinearColor(GetHeighMapPixelColor(WorldUVx, WorldUVy));
-#else
-	return FLinearColor::Blue;
-#endif
 }
 
 FVector AVaOceanStateActorSimple::GetOceanWaveVelocity(FVector& Location) const
@@ -147,10 +135,8 @@ FColor AVaOceanStateActorSimple::GetHeighMapPixelColor(float U, float V) const
 		return FColor::Black;
 	}
 
-#if WITH_EDITORONLY_DATA
-	// We are using the source art so grab the original width/height
-	const int32 Width = OceanHeightMap->Source.GetSizeX();
-	const int32 Height = OceanHeightMap->Source.GetSizeY();
+	const int32 Width = OceanHeightMap->GetSizeX();
+	const int32 Height = OceanHeightMap->GetSizeY();
 	const bool bUseSRGB = OceanHeightMap->SRGB;
 
 	check(Width > 0 && Height > 0 && HeightMapRawData.Num() > 0);
@@ -166,9 +152,6 @@ FColor AVaOceanStateActorSimple::GetHeighMapPixelColor(float U, float V) const
 	const FColor* SrcPtr = &((FColor*)(HeightMapRawData.GetTypedData()))[(PixelY - 1) * Width + PixelX - 1];
 
 	return *SrcPtr;
-#else
-	return FColor::Black;
-#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
