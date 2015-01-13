@@ -411,10 +411,13 @@ float UVaOceanSimulatorComponent::GetOceanLevelAtLocation(const FVector& Locatio
 	
 	return PixelColour.B;
 }
+
 FVector UVaOceanSimulatorComponent::GetCurrentAtLocation(const FVector& Location) const
 {
-	float WorldUVx = Location.X / PatchSize;
-	float WorldUVy = Location.Y / PatchSize;
+	const FVector& RelativeLocation = Location - GetOwner()->GetActorLocation();
+
+	float WorldUVx = (RelativeLocation.X / PatchSize) + 0.5f;
+	float WorldUVy = (RelativeLocation.Y / PatchSize) + 0.5f;
 	
 	FFloat16Color PixelColor = GetHeightMapPixelColor(WorldUVx, WorldUVy);
 
@@ -427,6 +430,7 @@ FVector UVaOceanSimulatorComponent::GetCurrentAtLocation(const FVector& Location
 
 	return FVector(NormalizedR, NormalizedG, 0.0f);	
 }
+
 void UVaOceanSimulatorComponent::UpdateDisplacementArray()
 {
 	ColorBuffer.Reset();
@@ -467,8 +471,8 @@ FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float 
 	check(Width > 0 && Height > 0 && ColorBuffer.Num() > 0);
 
 	// Normalize UV first
-	const float NormalizedU = U > 0 ? FMath::Fractional(U) : 1.0 + FMath::Fractional(U);
-	const float NormalizedV = V > 0 ? FMath::Fractional(V) : 1.0 + FMath::Fractional(V);
+	const float NormalizedU = U >= 0 ? FMath::Fractional(U) : 1.0 + FMath::Fractional(U);
+	const float NormalizedV = V >= 0 ? FMath::Fractional(V) : 1.0 + FMath::Fractional(V);
 
 	const int PixelX = NormalizedU * (Width - 1) + 1;
 	const int PixelY = NormalizedV * (Height - 1) + 1;

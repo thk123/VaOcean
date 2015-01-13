@@ -140,7 +140,7 @@ void AVaOceanStateActor::Tick(float DeltaSeconds)
 	// draw debug speheres
 	if (bIsDrawingDebugSpheres || bIsDrawingDebugCurrentLines)
 	{
-		const float GapBetweenSpheres = 2000.0f / HalfNumberOfDebugSpheres;
+		const float GapBetweenSpheres = (GetOceanPatchSize() / 2.0f) / HalfNumberOfDebugSpheres;
 		for (int i = -HalfNumberOfDebugSpheres; i < HalfNumberOfDebugSpheres; ++i)
 		{
 			for (int j = -HalfNumberOfDebugSpheres; j < HalfNumberOfDebugSpheres; ++j)
