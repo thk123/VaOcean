@@ -36,6 +36,10 @@ class UVaOceanSimulatorComponent : public UActorComponent
 
 	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
 	float PatchSize;
+
+	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
+	float CurrentPatchSize;
+
 	//////////////////////////////////////////////////////////////////////////
 	// Buffered data access API
 
