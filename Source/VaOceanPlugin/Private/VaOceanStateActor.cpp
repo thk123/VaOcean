@@ -3,7 +3,7 @@
 #include "VaOceanPluginPrivatePCH.h"
 #include "VaOceanStateActor.h"
 
-AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializeProperties& PCIP)
+AVaOceanStateActor::AVaOceanStateActor(const class FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
 #if WITH_EDITORONLY_DATA
@@ -32,7 +32,7 @@ AVaOceanStateActor::AVaOceanStateActor(const class FPostConstructInitializePrope
 #endif // WITH_EDITORONLY_DATA
 
 	// We need a scene component to attach Icon sprite
-	TSubobjectPtr<USceneComponent> SceneComponent = PCIP.CreateDefaultSubobject<USceneComponent>(this, TEXT("SceneComp"));
+	USceneComponent* SceneComponent = PCIP.CreateDefaultSubobject<USceneComponent>(this, TEXT("SceneComp"));
 	RootComponent = SceneComponent;
 	RootComponent->Mobility = EComponentMobility::Movable;
 

@@ -2,7 +2,7 @@
 
 #include "VaOceanPluginPrivatePCH.h"
 
-AVaOceanStateActorSimple::AVaOceanStateActorSimple(const class FPostConstructInitializeProperties& PCIP)
+AVaOceanStateActorSimple::AVaOceanStateActorSimple(const class FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
 	HeightMapWaves = 1;

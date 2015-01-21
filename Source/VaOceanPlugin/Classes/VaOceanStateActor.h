@@ -16,7 +16,7 @@ class VAOCEANPLUGIN_API AVaOceanStateActor : public AActor
 #if WITH_EDITORONLY_DATA
 	/** A UBillboardComponent to hold Icon sprite */
 	UPROPERTY()
-	TSubobjectPtr<UBillboardComponent> SpriteComponent;
+	UBillboardComponent* SpriteComponent;
 
 	/** Icon sprite */
 	UTexture2D* SpriteTexture;

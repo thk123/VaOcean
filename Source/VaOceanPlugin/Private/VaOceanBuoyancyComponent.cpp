@@ -2,7 +2,7 @@
 
 #include "VaOceanPluginPrivatePCH.h"
 
-UVaOceanBuoyancyComponent::UVaOceanBuoyancyComponent(const class FPostConstructInitializeProperties& PCIP)
+UVaOceanBuoyancyComponent::UVaOceanBuoyancyComponent(const class FObjectInitializer& PCIP)
 	: Super(PCIP)
 {
 	bWantsInitializeComponent = true;
