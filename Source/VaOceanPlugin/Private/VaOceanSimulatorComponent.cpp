@@ -445,7 +445,7 @@ void UVaOceanSimulatorComponent::UpdateDisplacementArray()
 {
 	ColorBuffer.Reset();
 
-	if (DisplacementTarget)
+	/*if (DisplacementTarget)
 	{
 		FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)ResultantTexture->Resource;
 
@@ -460,20 +460,20 @@ void UVaOceanSimulatorComponent::UpdateDisplacementArray()
 				GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Yellow, TEXT("Error reading texture resource"));
 			}
 		}
-	}
+	}*/
 }
 
 FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float V) const
 {
 	// Check we have a raw data loaded
-	if (ColorBuffer.Num() == 0)
+	//if (ColorBuffer.Num() == 0)
 	{
 		//UE_LOG(LogVaOcean, Warning, TEXT("Ocean heightmap raw data is not loaded! Pixel is empty."));
 		return FFloat16Color(FLinearColor(0.5f, 0.5f, 0.0f));
 	}
 
 	// We are using the source art so grab the original width/height
-	FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)ResultantTexture->Resource;
+	/*FTextureRenderTarget2DResource* textureResource = (FTextureRenderTarget2DResource*)ResultantTexture->Resource;
 	const int32 Width = textureResource->GetSizeXY().X;
 	const int32 Height = textureResource->GetSizeXY().Y;
 	const bool bUseSRGB = ResultantTexture->SRGB;
@@ -487,7 +487,7 @@ FFloat16Color UVaOceanSimulatorComponent::GetHeightMapPixelColor(float U, float 
 	const int PixelX = NormalizedU * (Width - 1) + 1;
 	const int PixelY = NormalizedV * (Height - 1) + 1;
 	// Get color from
-	return ColorBuffer[(PixelY - 1) * Width + PixelX - 1];
+	return ColorBuffer[(PixelY - 1) * Width + PixelX - 1];*/
 }
 
 
