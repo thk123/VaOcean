@@ -416,27 +416,47 @@ float UVaOceanSimulatorComponent::GetOceanLevelAtLocation(const FVector& Locatio
 
 FVector UVaOceanSimulatorComponent::GetCurrentAtLocation(const FVector& Location) const
 {
-	const FVector& RelativeLocation = Location - GetOwner()->GetActorLocation();
-	const TRange<float> CurrentPatchRange = TRange<float>(-(CurrentPatchSize / 2.0f), CurrentPatchSize / 2.0f);
-	if (CurrentPatchRange.Contains(RelativeLocation.X) && CurrentPatchRange.Contains(RelativeLocation.Y))
+	if (bIsCurrentRelative)
 	{
-		float WorldUVx = (RelativeLocation.X / CurrentPatchSize) + 0.5f;
-		float WorldUVy = (RelativeLocation.Y / CurrentPatchSize) + 0.5f;
+		const FVector& RelativeLocation = Location - GetOwner()->GetActorLocation();
+		const TRange<float> CurrentPatchRange = TRange<float>(-(CurrentPatchSize / 2.0f), CurrentPatchSize / 2.0f);
+		if (CurrentPatchRange.Contains(RelativeLocation.X) && CurrentPatchRange.Contains(RelativeLocation.Y))
+		{
+			float WorldUVx = (RelativeLocation.X / CurrentPatchSize) + 0.5f;
+			float WorldUVy = (RelativeLocation.Y / CurrentPatchSize) + 0.5f;
 
-		FFloat16Color PixelColor = GetHeightMapPixelColor(WorldUVx, WorldUVy);
+			FFloat16Color PixelColor = GetHeightMapPixelColor(WorldUVx, WorldUVy);
 
-		float R = PixelColor.R;
-		float G = PixelColor.G;
+			float R = PixelColor.R;
+			float G = PixelColor.G;
+
+			// Colours in the range [0, 1] (we hope!) want them in range [-1, 1]
+			float NormalizedR = 2.0f * (R - 0.5f);
+			float NormalizedG = 2.0f * (G - 0.5f);
+
+			return FVector(NormalizedR, NormalizedG, 0.0f);
+		}
+		else
+		{
+			return FVector::ZeroVector;
+		}
+
+	}
+	else
+	{
+		float WorldUVx = Location.X / PatchSize;
+		float WorldUVy = Location.Y / PatchSize;
+
+		FFloat16Color PixelColour = GetHeightMapPixelColor(WorldUVx, WorldUVy);
+
+		float R = PixelColour.R;
+		float G = PixelColour.G;
 
 		// Colours in the range [0, 1] (we hope!) want them in range [-1, 1]
 		float NormalizedR = 2.0f * (R - 0.5f);
 		float NormalizedG = 2.0f * (G - 0.5f);
 
 		return FVector(NormalizedR, NormalizedG, 0.0f);
-	}
-	else
-	{
-		return FVector::ZeroVector;
 	}
 	
 }

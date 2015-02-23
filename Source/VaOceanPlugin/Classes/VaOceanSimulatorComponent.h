@@ -37,6 +37,13 @@ class UVaOceanSimulatorComponent : public UActorComponent
 	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
 	float PatchSize;
 
+	// Temporary hack: need to work out how we are doing currents, combining both
+	// level layout currents + wave currents + performance work
+	// For now, we just absolute position (like wave height) so that can use waves currents
+	// in storms
+	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
+	bool bIsCurrentRelative;
+
 	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
 	float CurrentPatchSize;
 
