@@ -77,6 +77,7 @@ UVaOceanSimulatorComponent::UVaOceanSimulatorComponent(const class FObjectInitia
 
 	PatchSize = 2000.0f;
 	CurrentPatchSize = 512.0f;
+	DisplacementMapTimeScale = 1.0f;
 }
 
 void UVaOceanSimulatorComponent::BeginDestroy()
@@ -241,7 +242,7 @@ void UVaOceanSimulatorComponent::TickComponent(float DeltaTime, enum ELevelTick 
 
 void UVaOceanSimulatorComponent::UpdateContent()
 {
-	UpdateDisplacementMap(GetWorld()->GetTimeSeconds());
+	UpdateDisplacementMap(GetWorld()->GetTimeSeconds() * DisplacementMapTimeScale);
 	UpdateDisplacementArray();
 }
 
