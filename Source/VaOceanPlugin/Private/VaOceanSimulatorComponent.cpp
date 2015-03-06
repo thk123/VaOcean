@@ -261,16 +261,18 @@ void UVaOceanSimulatorComponent::UpdateDisplacementMap(float WorldTime)
 	UpdateSpectrumCSPerFrameParams.m_pSRV_H0 = m_pSRV_H0;
 	UpdateSpectrumCSPerFrameParams.m_pSRV_Omega = m_pSRV_Omega;
 	UpdateSpectrumCSPerFrameParams.m_pUAV_Ht = m_pUAV_Ht;
+	if (GMaxRHIFeatureLevel == ERHIFeatureLevel::SM5)
+	{
 
-	ENQUEUE_UNIQUE_RENDER_COMMAND_TWOPARAMETER(
-		UpdateSpectrumCSCommand,
-		FUpdateSpectrumCSImmutable, ImmutableParams, UpdateSpectrumCSImmutableParams,
-		FUpdateSpectrumCSPerFrame, PerFrameParams, UpdateSpectrumCSPerFrameParams,
-		{
+		ENQUEUE_UNIQUE_RENDER_COMMAND_TWOPARAMETER(
+			UpdateSpectrumCSCommand,
+			FUpdateSpectrumCSImmutable, ImmutableParams, UpdateSpectrumCSImmutableParams,
+			FUpdateSpectrumCSPerFrame, PerFrameParams, UpdateSpectrumCSPerFrameParams,
+			{
 			FUpdateSpectrumUniformParameters Parameters;
 			Parameters.Time = PerFrameParams.g_Time;
 
-			FUpdateSpectrumUniformBufferRef UniformBuffer = 
+			FUpdateSpectrumUniformBufferRef UniformBuffer =
 				FUpdateSpectrumUniformBufferRef::CreateUniformBufferImmediate(Parameters, UniformBuffer_SingleFrame);
 
 			TShaderMapRef<FUpdateSpectrumCS> UpdateSpectrumCS(GetGlobalShaderMap(SP_PCD3D_SM5));
@@ -291,32 +293,32 @@ void UVaOceanSimulatorComponent::UpdateDisplacementMap(float WorldTime)
 			UpdateSpectrumCS->UnbindBuffers(RHICmdList);
 		});
 
-	// ------------------------------------ Perform FFT -------------------------------------------
-	ENQUEUE_UNIQUE_RENDER_COMMAND_FOURPARAMETER(
-		RadixFFTCommand,
-		FRadixPlan512*, pPlan, &FFTPlan,
-		FUnorderedAccessViewRHIRef, m_pUAV_Dxyz, m_pUAV_Dxyz,
-		FShaderResourceViewRHIRef, m_pSRV_Dxyz, m_pSRV_Dxyz,
-		FShaderResourceViewRHIRef, m_pSRV_Ht, m_pSRV_Ht,
-		{
+		// ------------------------------------ Perform FFT -------------------------------------------
+		ENQUEUE_UNIQUE_RENDER_COMMAND_FOURPARAMETER(
+			RadixFFTCommand,
+			FRadixPlan512*, pPlan, &FFTPlan,
+			FUnorderedAccessViewRHIRef, m_pUAV_Dxyz, m_pUAV_Dxyz,
+			FShaderResourceViewRHIRef, m_pSRV_Dxyz, m_pSRV_Dxyz,
+			FShaderResourceViewRHIRef, m_pSRV_Ht, m_pSRV_Ht,
+			{
 			RadixCompute(RHICmdList, pPlan, m_pUAV_Dxyz, m_pSRV_Dxyz, m_pSRV_Ht);
 		});
 
-	// --------------------------------- Wrap Dx, Dy and Dz ---------------------------------------
-	FUpdateDisplacementPSPerFrame UpdateDisplacementPSPerFrameParams;
-	UpdateDisplacementPSPerFrameParams.g_ChoppyScale = StateActor->GetSpectrumConfig().ChoppyScale;
-	UpdateDisplacementPSPerFrameParams.g_GridLen = StateActor->GetSpectrumConfig().DispMapDimension / StateActor->GetSpectrumConfig().PatchLength;
-	UpdateDisplacementPSPerFrameParams.g_InputDxyz = m_pSRV_Dxyz;
-	FMemory::Memcpy(UpdateDisplacementPSPerFrameParams.m_pQuadVB, m_pQuadVB, sizeof(m_pQuadVB[0]) * 4);
+		// --------------------------------- Wrap Dx, Dy and Dz ---------------------------------------
+		FUpdateDisplacementPSPerFrame UpdateDisplacementPSPerFrameParams;
+		UpdateDisplacementPSPerFrameParams.g_ChoppyScale = StateActor->GetSpectrumConfig().ChoppyScale;
+		UpdateDisplacementPSPerFrameParams.g_GridLen = StateActor->GetSpectrumConfig().DispMapDimension / StateActor->GetSpectrumConfig().PatchLength;
+		UpdateDisplacementPSPerFrameParams.g_InputDxyz = m_pSRV_Dxyz;
+		FMemory::Memcpy(UpdateDisplacementPSPerFrameParams.m_pQuadVB, m_pQuadVB, sizeof(m_pQuadVB[0]) * 4);
 
-	FTextureRenderTargetResource* DisplacementRenderTarget = DisplacementTarget->GameThread_GetRenderTargetResource();
+		FTextureRenderTargetResource* DisplacementRenderTarget = DisplacementTarget->GameThread_GetRenderTargetResource();
 
-	ENQUEUE_UNIQUE_RENDER_COMMAND_THREEPARAMETER(
-		UpdateDisplacementPSCommand,
-		FTextureRenderTargetResource*, TextureRenderTarget, DisplacementRenderTarget,
-		FUpdateSpectrumCSImmutable, ImmutableParams, UpdateSpectrumCSImmutableParams,		// We're using the same params as for CS
-		FUpdateDisplacementPSPerFrame, PerFrameParams, UpdateDisplacementPSPerFrameParams,
-		{
+		ENQUEUE_UNIQUE_RENDER_COMMAND_THREEPARAMETER(
+			UpdateDisplacementPSCommand,
+			FTextureRenderTargetResource*, TextureRenderTarget, DisplacementRenderTarget,
+			FUpdateSpectrumCSImmutable, ImmutableParams, UpdateSpectrumCSImmutableParams,		// We're using the same params as for CS
+			FUpdateDisplacementPSPerFrame, PerFrameParams, UpdateDisplacementPSPerFrameParams,
+			{
 			FUpdateDisplacementUniformParameters Parameters;
 			Parameters.ChoppyScale = PerFrameParams.g_ChoppyScale;
 			Parameters.GridLen = PerFrameParams.g_GridLen;
@@ -346,21 +348,21 @@ void UVaOceanSimulatorComponent::UpdateDisplacementMap(float WorldTime)
 			UpdateDisplacementPS->UnsetParameters(RHICmdList);
 		});
 
-	// ----------------------------------- Generate Normal ----------------------------------------
-	FGenGradientFoldingPSPerFrame GenGradientFoldingPSPerFrameParams;
-	GenGradientFoldingPSPerFrameParams.g_ChoppyScale = StateActor->GetSpectrumConfig().ChoppyScale;
-	GenGradientFoldingPSPerFrameParams.g_GridLen = StateActor->GetSpectrumConfig().DispMapDimension / StateActor->GetSpectrumConfig().PatchLength;
-	FMemory::Memcpy(GenGradientFoldingPSPerFrameParams.m_pQuadVB, m_pQuadVB, sizeof(m_pQuadVB[0]) * 4);
+		// ----------------------------------- Generate Normal ----------------------------------------
+		FGenGradientFoldingPSPerFrame GenGradientFoldingPSPerFrameParams;
+		GenGradientFoldingPSPerFrameParams.g_ChoppyScale = StateActor->GetSpectrumConfig().ChoppyScale;
+		GenGradientFoldingPSPerFrameParams.g_GridLen = StateActor->GetSpectrumConfig().DispMapDimension / StateActor->GetSpectrumConfig().PatchLength;
+		FMemory::Memcpy(GenGradientFoldingPSPerFrameParams.m_pQuadVB, m_pQuadVB, sizeof(m_pQuadVB[0]) * 4);
 
-	FTextureRenderTargetResource* GradientRenderTarget = GradientTarget->GameThread_GetRenderTargetResource();
+		FTextureRenderTargetResource* GradientRenderTarget = GradientTarget->GameThread_GetRenderTargetResource();
 
-	ENQUEUE_UNIQUE_RENDER_COMMAND_FOURPARAMETER(
-		GenGradientFoldingPSCommand,
-		FTextureRenderTargetResource*, TextureRenderTarget, GradientRenderTarget,
-		FUpdateSpectrumCSImmutable, ImmutableParams, UpdateSpectrumCSImmutableParams,		// We're using the same params as for CS
-		FGenGradientFoldingPSPerFrame, PerFrameParams, GenGradientFoldingPSPerFrameParams,
-		FTextureRenderTargetResource*, DisplacementRenderTarget, DisplacementRenderTarget,
-		{
+		ENQUEUE_UNIQUE_RENDER_COMMAND_FOURPARAMETER(
+			GenGradientFoldingPSCommand,
+			FTextureRenderTargetResource*, TextureRenderTarget, GradientRenderTarget,
+			FUpdateSpectrumCSImmutable, ImmutableParams, UpdateSpectrumCSImmutableParams,		// We're using the same params as for CS
+			FGenGradientFoldingPSPerFrame, PerFrameParams, GenGradientFoldingPSPerFrameParams,
+			FTextureRenderTargetResource*, DisplacementRenderTarget, DisplacementRenderTarget,
+			{
 			FUpdateDisplacementUniformParameters Parameters;
 			Parameters.ChoppyScale = PerFrameParams.g_ChoppyScale;
 			Parameters.GridLen = PerFrameParams.g_GridLen;
@@ -387,8 +389,8 @@ void UVaOceanSimulatorComponent::UpdateDisplacementMap(float WorldTime)
 			//RHICopyToResolveTarget(TextureRenderTarget->GetRenderTargetTexture(), TextureRenderTarget->TextureRHI, false, FResolveParams());
 
 			GenGradientFoldingPS->UnsetParameters(RHICmdList);
-	});
-	
+		});
+	}
 }
 
 
