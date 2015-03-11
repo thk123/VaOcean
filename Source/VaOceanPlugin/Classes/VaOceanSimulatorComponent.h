@@ -48,6 +48,9 @@ class UVaOceanSimulatorComponent : public UActorComponent
 	bool bIsCurrentRelative;
 
 	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
+	bool bIsDisplacementRelative;
+
+	UPROPERTY(EditDefaultsOnly, Category = OceanSetup)
 	float CurrentPatchSize;
 
 	//////////////////////////////////////////////////////////////////////////

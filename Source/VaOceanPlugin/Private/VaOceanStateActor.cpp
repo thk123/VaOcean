@@ -145,7 +145,9 @@ void AVaOceanStateActor::Tick(float DeltaSeconds)
 		{
 			for (int j = -HalfNumberOfDebugSpheres; j < HalfNumberOfDebugSpheres; ++j)
 			{
-				FVector SpherePoint = GetActorLocation() + FVector(GapBetweenSpheres * i, GapBetweenSpheres * j, 0.0f);
+				const FRotator& OceanRotation = GetActorRotation();
+				const FVector& Offset = OceanRotation.RotateVector(FVector(GapBetweenSpheres * i, GapBetweenSpheres * j, 0.0f));
+				FVector SpherePoint = GetActorLocation() + Offset;
 				float OceanHeight = GetOceanLevelAtLocation(SpherePoint);
 
 				if (bIsDrawingDebugSpheres)

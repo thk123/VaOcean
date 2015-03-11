@@ -409,8 +409,21 @@ FLinearColor UVaOceanSimulatorComponent::GetGradientColor(int32 X, int32 Y) cons
 
 float UVaOceanSimulatorComponent::GetOceanLevelAtLocation(const FVector& Location) const
 {
-	float WorldUVx = Location.X / PatchSize;
-	float WorldUVy = Location.Y / PatchSize;
+	float WorldUVx;
+	float WorldUVy;
+	if (bIsDisplacementRelative)
+	{
+		const FRotator& OceanRotation = GetOwner()->GetActorRotation();
+		const FVector& RelativeLocation = OceanRotation.UnrotateVector(Location - GetOwner()->GetActorLocation());
+		
+		WorldUVx = RelativeLocation.X / PatchSize + 0.5f;
+		WorldUVy = RelativeLocation.Y / PatchSize + 0.5f;
+	}
+	else
+	{
+		WorldUVx = Location.X / PatchSize;
+		WorldUVy = Location.Y / PatchSize;
+	}
 
 	FFloat16Color PixelColour = GetHeightMapPixelColor(WorldUVx, WorldUVy);
 	
