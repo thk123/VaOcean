@@ -149,7 +149,7 @@ FColor AVaOceanStateActorSimple::GetHeighMapPixelColor(float U, float V) const
 	const int PixelY = NormalizedV * (Height-1) + 1;
 
 	// Get color from
-	const FColor* SrcPtr = &((FColor*)(HeightMapRawData.GetTypedData()))[(PixelY - 1) * Width + PixelX - 1];
+	const FColor* SrcPtr = &((FColor*)(HeightMapRawData.GetData()))[(PixelY - 1) * Width + PixelX - 1];
 
 	return *SrcPtr;
 }
