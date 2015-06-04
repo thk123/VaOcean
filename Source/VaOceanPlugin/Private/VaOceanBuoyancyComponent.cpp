@@ -92,7 +92,7 @@ void UVaOceanBuoyancyComponent::TickComponent(float DeltaTime, enum ELevelTick T
 
 void UVaOceanBuoyancyComponent::PerformWaveReaction(float DeltaTime)
 {
-	AActor* MyOwner = GetOwner();
+	/*AActor* MyOwner = GetOwner();
 
 	if (!UpdatedComponent || MyOwner == NULL)
 	{
@@ -108,10 +108,10 @@ void UVaOceanBuoyancyComponent::PerformWaveReaction(float DeltaTime)
 
 	// XYZ === Throttle, Steering, Rise == Forwards, Sidewards, Upwards
 	FVector X, Y, Z;
-	GetAxes(OldRotation, X, Y, Z);
+	GetAxes(OldRotation, X, Y, Z);*/
 
 	// Process tension dots and get torque from wind/waves
-	for (FVector TensionDot : TensionDots)
+	/*for (FVector TensionDot : TensionDots)
 	{
 		// Translate point to world coordinates
 		FVector TensionDotDisplaced = OldRotation.RotateVector(TensionDot + COMOffset);
@@ -135,9 +135,9 @@ void UVaOceanBuoyancyComponent::PerformWaveReaction(float DeltaTime)
 		// Point dynamic pressure [http://en.wikipedia.org/wiki/Dynamic_pressure]
 		// rho = 1.03f for ocean water
 		FVector WaveVelocity = GetWaveVelocity(TensionDotWorld);
-		float DotQ = 0.515f * FMath::Square(WaveVelocity.Size());
-		FVector WaveForce = FVector(0.0,0.0,1.0) * DotQ /* DotSurfaceNormal*/ * (-DotAltitude) * TensionDepthFactor;
-		
+		float DotQ = 0.515f * FMath::Square(WaveVelocity.Size());*/
+		//FVector WaveForce = FVector(0.0,0.0,1.0) * DotQ /* DotSurfaceNormal*/ * (-DotAltitude) * TensionDepthFactor;
+	/*
 		// We don't want Z to be affected by DotQ
 		WaveForce.Z /= DotQ;
 
@@ -173,7 +173,7 @@ void UVaOceanBuoyancyComponent::PerformWaveReaction(float DeltaTime)
 		TensionTorqueResult *= DeltaTime;
 		TensionTorqueResult *= OwnerScale.X;// *OwnerScale.Y * OwnerScale.Z;
 		UpdatedComponent->AddTorque(TensionTorqueResult);
-	}
+	}*/
 }
 
 void UVaOceanBuoyancyComponent::GetAxes(FRotator A, FVector& X, FVector& Y, FVector& Z)
